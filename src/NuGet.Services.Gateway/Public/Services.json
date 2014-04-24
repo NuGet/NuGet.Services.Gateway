@@ -1,0 +1,9 @@
+﻿{
+    "version": 3,
+    "alternates": [],
+    "services": {
+        "search": "/search",
+        "work": "/work",
+        "v2feed": "/api/v2/"
+    }
+}

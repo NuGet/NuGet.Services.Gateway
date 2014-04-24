@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProductVersion>2.3</ProductVersion>
+        <ProjectGuid>008c1cbc-b0fc-4678-a97d-28ffb802ff22</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>NuGet.Services.Gateway.Cloud</RootNamespace>
+        <AssemblyName>NuGet.Services.Gateway.Cloud</AssemblyName>
+        <StartDevelopmentStorage>True</StartDevelopmentStorage>
+        <Name>NuGet.Services.Gateway.Cloud</Name>
+        <UseWebProjectPorts>False</UseWebProjectPorts>
+        <PackageEnableRemoteDebugger>False</PackageEnableRemoteDebugger>
+        <TargetEnvironment Condition="'$(TargetEnvironment)' == ''">prod</TargetEnvironment>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <!-- Items for the project -->
+    <ItemGroup>
+        <ServiceDefinition Include="ServiceDefinition.csdef" />
+        <ServiceConfiguration Include="ServiceConfiguration.Local.cscfg" />
+        <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\NuGet.Services.Gateway\NuGet.Services.Gateway.csproj">
+            <Name>NuGet.Services.Gateway</Name>
+            <Project>{3de20e3f-f1af-4416-9bae-b81f9fbde7e0}</Project>
+            <Private>True</Private>
+            <RoleType>Web</RoleType>
+            <RoleName>NuGet.Services.Gateway</RoleName>
+            <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+        </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="NuGet.Services.GatewayContent\" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="NuGet.Services.GatewayContent\diagnostics.wadcfg">
+            <SubType>Content</SubType>
+        </Content>
+        <Content Include="NuGet.Services.GatewayContent\diagnostics.wadcfg">
+            <SubType>Content</SubType>
+        </Content>
+        <Content Include="NuGet.Services.GatewayContent\WebpiCmd.exe">
+            <SubType>Content</SubType>
+        </Content>
+        <Content Include="NuGet.Services.GatewayContent\WebpiCmd.exe.config">
+            <SubType>Content</SubType>
+        </Content>
+    </ItemGroup>
+    <!-- Import the target files for this project template -->
+    <PropertyGroup>
+        <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+        <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\2.3\</CloudExtensionsDir>
+    </PropertyGroup>
+    <Import Project="$(CloudExtensionsDir)Microsoft.WindowsAzure.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)..\..\NuGet.Cloud.targets" />
+
+    <PropertyGroup>
+        <_AbsWebConfigTransform Condition="'$(_AbsWebConfigTransform)' == '' And '$(WebConfigTransform)' != '' And Exists('$(MSBuildProjectDirectory)\$(WebConfigTransform)')">$(MSBuildProjectDirectory)\$(WebConfigTransform)</_AbsWebConfigTransform>
+        <_AbsWebConfigTransform Condition="'$(_AbsWebConfigTransform)' == '' And '$(WebConfigTransform)' != '' And Exists('$(MSBuildStartupDirectory)\$(WebConfigTransform)')">$(MSBuildStartupDirectory)\$(WebConfigTransform)</_AbsWebConfigTransform>
+        <_AbsWebConfigTransform Condition="'$(_AbsWebConfigTransform)' == ''">$(WebConfigTransform)</_AbsWebConfigTransform>
+    </PropertyGroup>
+    <Target Name="RunXdt" AfterTargets="CopyWebRoleFiles" Condition="'$(_AbsWebConfigTransform)' != ''">
+        <ItemGroup>
+            <_TargetWebConfig Include="$(IntermediateWebOutputPath)%(CurrentRoleWebFiles.TargetPath)" Condition="'%(CurrentRoleWebFiles.Filename)' == 'web' And '%(CurrentRoleWebFiles.Extension)' == '.config'" />
+        </ItemGroup>
+        <PropertyGroup>
+            <ConfigTransformerPath>$(MSBuildThisFileDirectory)..\..\packages\WebConfigTransformRunner.1.0.0.1\tools\WebConfigTransformRunner.exe</ConfigTransformerPath>
+        </PropertyGroup>
+        <Error Text="Specified config transform does not exist: '$(_AbsWebConfigTransform)'" Condition="!Exists('$(_AbsWebConfigTransform)')" />
+        <Message Text="Running XDT Transform '$(_AbsWebConfigTransform)' on '@(_TargetWebConfig)'" />
+        <Exec Command="&quot;$(ConfigTransformerPath)&quot; &quot;%(_TargetWebConfig.FullPath)&quot; &quot;$(_AbsWebConfigTransform)&quot; &quot;%(_TargetWebConfig.FullPath)&quot;" />
+    </Target>
+</Project>

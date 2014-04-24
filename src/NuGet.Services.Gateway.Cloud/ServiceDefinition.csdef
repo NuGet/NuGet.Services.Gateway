@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="NuGet.Services.Gateway.Cloud" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2014-01.2.3">
+    <WebRole name="NuGet.Services.Gateway" vmsize="Small">
+        <Startup>
+            <Task commandLine="Startup.cmd" executionContext="elevated" taskType="simple" />
+        </Startup>
+        <Sites>
+            <Site name="Web">
+                <Bindings>
+                    <Binding name="HTTP" endpointName="HTTP" />
+                    <Binding name="HTTPS" endpointName="HTTPS" />
+                </Bindings>
+            </Site>
+        </Sites>
+        <Endpoints>
+            <InputEndpoint name="HTTP" protocol="http" port="80" />
+            <InputEndpoint name="HTTPS" protocol="https" port="443" certificate="SSL" />
+        </Endpoints>
+        <Imports>
+            <Import moduleName="Diagnostics" />
+            <Import moduleName="RemoteAccess" />
+            <Import moduleName="RemoteForwarder" />
+        </Imports>
+        <Certificates>
+            <Certificate name="SSL" storeLocation="LocalMachine" storeName="My" />
+        </Certificates>
+        <ConfigurationSettings>
+        </ConfigurationSettings>
+        <LocalResources>
+            <LocalStorage name="Logs" cleanOnRoleRecycle="true" sizeInMB="1024" />
+        </LocalResources>
+    </WebRole>
+</ServiceDefinition>
