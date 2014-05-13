@@ -1,6 +1,6 @@
 ﻿{
     "version": 3,
-    "alternates": [],
+    "mirrors": [ ],
     "services": {
         "search": "/search",
         "work": "/work",

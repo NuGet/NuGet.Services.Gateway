@@ -1,0 +1,18 @@
+﻿{
+    "@context": {
+        "@vocab": "http://vocab.nuget.org/services/",
+        "nuget": "http://vocab.nuget.org/",
+        "version": "nuget:platform#version",
+        "mirrors": {
+            "@id": "nuget:platform#mirrors",
+            "@container": "@list"
+        },
+        "services": {
+            "@id": "nuget:platform#services",
+            "@container": "@set"
+        },
+        "name": "@id",
+        "location": "nuget:platform#service-location",
+        "@base": "http://vocab.nuget.org/services/"
+    }
+}
