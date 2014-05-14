@@ -25,6 +25,7 @@
             <Certificate name="SSL" storeLocation="LocalMachine" storeName="My" />
         </Certificates>
         <ConfigurationSettings>
+            <Setting name="Gateway.ServiceStem" />
         </ConfigurationSettings>
         <LocalResources>
             <LocalStorage name="Logs" cleanOnRoleRecycle="true" sizeInMB="1024" />
