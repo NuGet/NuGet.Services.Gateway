@@ -1,10 +1,12 @@
 @echo off
 REM Install ARR v2.5
 SET WebPICmd=%~dp0..\webpicmd.exe
+SET APPCMD=%windir%\system32\inetsrv\appcmd.exe
 
 if not exist %WebPICmd% goto error
 
-%~dp0..\webpicmd /Install /AcceptEula /SuppressReboot  /Products:ARRv2_5 >> installlog.txt 2>&1
+%webpicmd% /Install /AcceptEula /SuppressReboot  /Products:ARRv2_5
+%appcmd% unlock config /section:system.webServer/proxy
 exit /b 0
 
 :error
