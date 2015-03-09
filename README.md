@@ -1,6 +1,7 @@
-NuGet.Services.Gateway
-===================
+# NuGet.Services.Gateway
 
-Redirector for NuGet Service Index
+This repo contains a edirector for NuGet Service Index.
 
-Got bugs? File them here: https://github.com/NuGet/NuGetGallery/issues
+## Feedback
+
+Check out the [contributing](http://docs.nuget.org/contribute) page to see the best places to log issues and start discussions. The [NuGet Home](https://github.com/NuGet/Home) repo provides an overview of the different NuGet projects available.
